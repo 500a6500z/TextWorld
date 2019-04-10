@@ -5,7 +5,7 @@ public class Chicken extends Creature {
     }
 
     @Override
-    public void move() {
+    public void act() {
         moveRandom();
     }
 

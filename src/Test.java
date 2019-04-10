@@ -36,7 +36,7 @@ public class Test {
 
         for(int i = 0; i < 5; i++) {
             p.moveRandom();
-            s.move();
+            s.act();
 
             System.out.println("player: " + p.getCurrentRoom().getName());
             System.out.println("star: " + s.getCurrentRoom().getName());

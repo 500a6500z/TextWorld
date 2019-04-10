@@ -5,8 +5,27 @@ public class Graph {
 
     HashMap<String, Node> map;
 
-    public Graph() {
+    Player player;
+
+    public HashMap<String, Node> getMap() {
+        return map;
+    }
+
+    public void setMap(HashMap<String, Node> map) {
+        this.map = map;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
+    public Graph(String n, String d) {
         map = new HashMap<>();
+        player = new Player(n, d);
     }
 
     public void addNode(Node node) {
@@ -27,16 +46,13 @@ public class Graph {
     }
 
     public Node getNode(String name) {
-        for(Node node : map.values()) {
-            if(node.name.equals(name)) {
-                return node;
-            }
-        }        return null;
+        return map.get(name);
     }
 
     static class Node {
         private HashMap<String, Node> adj;
-        private ArrayList<Item> items;
+        private HashMap<String, Item> items;
+        private HashMap<String, Creature> creatures;
         private String name;
         private String desc;
 
@@ -44,20 +60,19 @@ public class Graph {
             name = n;
             desc = d;
             adj = new HashMap<>();
-            items = new ArrayList<>();
-        }
-
-        public ArrayList<Item> getItems() {
-            return items;
+            items = new HashMap<>();
+            creatures = new HashMap<>();
         }
 
         public String displayItems() {
             String out = "";
-            for(int i = 0; i < items.size(); i++) {
-                out += items.get(i).getName();
-                if(i != items.size() - 1) {
+            int ct = 0;
+            for(Item item : items.values()) {
+                out += item.getName();
+                if(ct != items.size() - 1) {
                     out += ", ";
                 }
+                ct++;
             }
             if(out.length() == 0) {
                 out = "no items";
@@ -65,25 +80,16 @@ public class Graph {
             return out;
         }
 
-        public void addItem(String name) {
-            items.add(new Item(name, "default"));
-        }
-
         public void addItem(String name, String desc) {
-            items.add(new Item(name, desc));
+            items.put(name, new Item(name, desc));
         }
 
         public void addItem(Item item) {
-            items.add(item);
+            items.put(item.getName(), item);
         }
 
         public Item removeItem(String name) {
-            for(int i = 0; i < items.size(); i++) {
-                if(items.get(i).getName().equals(name)) {
-                    return items.remove(i);
-                }
-            }
-            return null;
+            return items.remove(name);
         }
 
         public boolean destroyItem(String name) {
@@ -96,20 +102,36 @@ public class Graph {
             return false;
         }
 
+        public String displayCreatures() {
+            String out = "";
+            int ct = 0;
+            for(Creature creature : creatures.values()) {
+                out += creature.getName();
+                if(ct != creatures.size() - 1) {
+                    out += ", ";
+                }
+                ct++;
+            }
+            if(out.length() == 0) {
+                out = "no creatures (besides you)";
+            }
+            return out;
+        }
+
+        public void addCreature(Creature creature) {
+            creatures.put(creature.getName(), creature);
+        }
+
+        public Creature removeCreature(String name) {
+            return creatures.remove(name);
+        }
+
         public HashMap<String, Node> getNeighbors() {
             return adj;
         }
 
         public void addNeighbor(Node n) {
             adj.put(n.getName(), n);
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public String getDescription() {
-            return desc;
         }
 
         public String getNeighborNames() {
@@ -130,6 +152,22 @@ public class Graph {
 
         public Node getNeighbor(String n) {
             return adj.get(n);
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getDesc() {
+            return desc;
+        }
+
+        public void setDesc(String desc) {
+            this.desc = desc;
         }
     }
 }

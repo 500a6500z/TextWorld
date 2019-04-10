@@ -3,15 +3,25 @@ import java.util.ArrayList;
 public class Player extends Creature {
 
     private ArrayList<Item> items;
+    private Command command;
+
+    public Command getCommand() {
+        return command;
+    }
+
+    public void setCommand(Command command) {
+        this.command = command;
+    }
 
     public Player(String n, String d) {
         super(n, d);
         items = new ArrayList<>();
         currentRoom = null;
+        command = null;
     }
 
-    //TODO: implement move() in player
-    public void move() {
+    //TODO: implement act() in player
+    public void act() {
 
     }
 

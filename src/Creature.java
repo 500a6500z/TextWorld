@@ -14,7 +14,7 @@ public abstract class Creature implements Entity {
         desc = d;
     }
 
-    public abstract void move();
+    public abstract void act();
 
     protected Graph.Node getCurrentRoom() {
         return currentRoom;
@@ -40,6 +40,7 @@ public abstract class Creature implements Entity {
         return false;
     }
 
+    //TODO: Use less memory in moveRandom() and getRandomAdjacentRoom()
     protected void moveRandom() {
         ArrayList<Graph.Node> adj = new ArrayList<>(currentRoom.getNeighbors().values());
         if(adj.size() == 0) return;
@@ -79,11 +80,6 @@ public abstract class Creature implements Entity {
             path.remove(neighbor);
         }
         return null;
-    }
-
-    //TODO: implement this
-    protected boolean isRoomCloserTo(Player p, Graph.Node n) {
-        return false;
     }
 
     public String getName() {

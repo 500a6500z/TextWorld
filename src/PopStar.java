@@ -6,7 +6,7 @@ public class PopStar extends Creature {
         target = p;
     }
 
-    public void move() {
+    public void act() {
         moveTowards(target.getCurrentRoom());
     }
 }
