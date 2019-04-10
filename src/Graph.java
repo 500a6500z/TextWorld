@@ -102,6 +102,10 @@ public class Graph {
             return false;
         }
 
+        public HashMap<String, Item> getItems() {
+            return items;
+        }
+
         public String displayCreatures() {
             String out = "";
             int ct = 0;
@@ -126,6 +130,10 @@ public class Graph {
             return creatures.remove(name);
         }
 
+        public HashMap<String, Creature> getCreatures() {
+            return creatures;
+        }
+
         public HashMap<String, Node> getNeighbors() {
             return adj;
         }
@@ -134,7 +142,7 @@ public class Graph {
             adj.put(n.getName(), n);
         }
 
-        public String getNeighborNames() {
+        public String displayNeighbors() {
             String output = "";
             int ct = 0;
             for (Node n : adj.values()) {

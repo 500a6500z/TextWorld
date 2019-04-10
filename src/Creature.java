@@ -25,7 +25,7 @@ public abstract class Creature implements Entity {
     }
 
     protected boolean moveToRoom(Graph.Node node) {
-        if(currentRoom.getNeighbors().containsValue(node)) {
+        if(currentRoom.getNeighbors().get(node.getName()) != null) {
             currentRoom = node;
             return true;
         }

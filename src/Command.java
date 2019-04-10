@@ -1,5 +1,5 @@
 public interface Command {
 
-    public void execute();
+    public void execute(Player p);
 
 }

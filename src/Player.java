@@ -1,8 +1,9 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Player extends Creature {
 
-    private ArrayList<Item> items;
+    private HashMap<String, Item> items;
     private Command command;
 
     public Command getCommand() {
@@ -15,36 +16,41 @@ public class Player extends Creature {
 
     public Player(String n, String d) {
         super(n, d);
-        items = new ArrayList<>();
+        items = new HashMap<>();
         currentRoom = null;
         command = null;
     }
 
-    //TODO: implement act() in player
     public void act() {
-
+        command.execute(this);
     }
 
     public void addItem(Item item) {
-        items.add(item);
+        items.put(item.getName(), item);
     }
 
     public Item removeItem(String name) {
-        for(int i = 0; i < items.size(); i++) {
-            if(items.get(i).getName().equals(name)) {
-                return items.remove(i);
+        return items.remove(name);
+    }
+
+    public String displayItems() {
+        String out = "";
+        int ct = 0;
+        for(Item item : items.values()) {
+            out += item.getName();
+            if(ct != items.size() - 1) {
+                out += ", ";
             }
+            ct++;
         }
-        return null;
+        if(out.length() == 0) {
+            out = "no items";
+        }
+        return out;
     }
 
     public boolean destroyItem(String name) {
-        for(Item i : items) {
-            if(i.getName().equals(name)) {
-                items.remove(i);
-                return true;
-            }
-        }
+        if(items.remove(name) != null) return true;
         return false;
     }
 
