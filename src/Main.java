@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
@@ -35,8 +36,14 @@ public class Main {
             }
             if(quit) break;
             for(Graph.Node room : g.getMap().values()) {
-                for(Creature c : room.getCreatures().values()) {
+                //prevent concurrent modification exception
+                ArrayList<Creature> creatures = new ArrayList<>(room.getCreatures().values());
+                for(int i = creatures.size() - 1; i >= 0; i--) {
+                    Creature c = creatures.get(i);
+                    if(c.isPlayer()) continue;
+                    //System.out.println(c.getName() + " was in " + c.getCurrentRoom().getName());
                     c.act();
+                    //System.out.println(c.getName() + " now in " + c.getCurrentRoom().getName());
                 }
             }
         }
@@ -183,7 +190,7 @@ public class Main {
         g.addUndirectedEdge("3", "5");
         g.addUndirectedEdge("1", "3");
         g.addUndirectedEdge("0", "1");
-        g.addUndirectedEdge("0", "sleep");
+        g.addDirectedEdge("0", "sleep");
         g.addDirectedEdge("0", "???");
         g.addDirectedEdge("???", "ahole");
     }

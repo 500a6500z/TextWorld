@@ -110,6 +110,7 @@ public class Graph {
             String out = "";
             int ct = 0;
             for(Creature creature : creatures.values()) {
+                if(creature.isPlayer()) continue;
                 out += creature.getName();
                 if(ct != creatures.size() - 1) {
                     out += ", ";

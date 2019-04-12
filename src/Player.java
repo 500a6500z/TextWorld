@@ -19,6 +19,7 @@ public class Player extends Creature {
         items = new HashMap<>();
         currentRoom = null;
         command = null;
+        isPlayer = true;
     }
 
     public void act() {

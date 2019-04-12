@@ -8,10 +8,12 @@ public abstract class Creature implements Entity {
     protected Graph.Node currentRoom;
     protected String name;
     protected String desc;
+    protected boolean isPlayer;
 
     public Creature(String n, String d) {
         name = n;
         desc = d;
+        isPlayer = false;
     }
 
     public abstract void act();
@@ -22,19 +24,24 @@ public abstract class Creature implements Entity {
 
     protected void setRoom(Graph.Node node) {
         this.currentRoom = node;
+        currentRoom.addCreature(this);
     }
 
     protected boolean moveToRoom(Graph.Node node) {
         if(currentRoom.getNeighbors().get(node.getName()) != null) {
+            currentRoom.removeCreature(name);
             currentRoom = node;
+            currentRoom.addCreature(this);
             return true;
         }
         return false;
     }
 
     protected boolean moveToRoom(String name) {
-        if(currentRoom.getNeighbors().containsKey(name)) {
+        if(currentRoom.getNeighbors().get(name) != null) {
+            currentRoom.removeCreature(name);
             currentRoom = currentRoom.getNeighbor(name);
+            currentRoom.addCreature(this);
             return true;
         }
         return false;
@@ -42,13 +49,14 @@ public abstract class Creature implements Entity {
 
     //TODO: Use less memory in moveRandom() and getRandomAdjacentRoom()
     protected void moveRandom() {
-        ArrayList<Graph.Node> adj = new ArrayList<>(currentRoom.getNeighbors().values());
-        if(adj.size() == 0) return;
-        currentRoom = adj.get((int) (Math.random() * adj.size()));
+        Graph.Node nextRoom = getRandomAdjacentRoom();
+        if(nextRoom == null) return;
+        moveToRoom(nextRoom);
     }
 
     protected Graph.Node getRandomAdjacentRoom() {
         ArrayList<Graph.Node> adj = new ArrayList<>(currentRoom.getNeighbors().values());
+        if(adj.size() == 0) return null;
         return adj.get((int) (Math.random() * adj.size()));
     }
 
@@ -59,7 +67,7 @@ public abstract class Creature implements Entity {
         if(set == null) return false;
         for(Graph.Node n : currentRoom.getNeighbors().values()) {
             if(set.contains(n)) {
-                currentRoom = n;
+                moveToRoom(n);
                 return true;
             }
         }
@@ -96,5 +104,9 @@ public abstract class Creature implements Entity {
 
     public void setDesc(String desc) {
         this.desc = desc;
+    }
+
+    public boolean isPlayer() {
+        return isPlayer;
     }
 }
